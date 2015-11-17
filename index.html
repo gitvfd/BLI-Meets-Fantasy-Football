@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Fantasy football meets BLI</title>
+  	<script src="http://d3js.org/d3.v3.js"></script>
+  	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  	<style>    
+		@font-face {
+			font-family: 'TheSerif';
+			src: url('Fonts/TheSerif_D4_5_.woff');
+			font-weight: normal;
+			font-style: normal;
+		} 
+		h1{
+			font-family: "TheSerif",sans-serif;
+			font-size: 56px;
+			margin: 10px 0;
+			line-height: 1em;
+		}
+		h2{
+			font: normal 21px "TheSerif", sans-serif;
+			line-height: 1.0em;
+			font-size: 21px;
+			margin-bottom: 10px;
+			position: relative;
+		}
+		p{
+			font-family: normal "TheSerif",sans-serif;
+			line-height: 20px;
+			color: #464646;
+		}
+
+		b{
+
+			float:left;
+			font: normal 16.8px "TheSerif", sans-serif;
+			line-height: 1.4em;
+		}
+
+		b, strong {
+		font-weight: 350;
+		}
+
+		a{
+			color:#78869f;
+		}
+		h5{
+			float:left;
+			
+			font: normal 16.8px "TheSerif", sans-serif;
+			line-height: 1.2em;
+			-webkit-margin-before: 0.5em;
+			-webkit-margin-after: 0.5em;
+			width:525px;
+
+		}
+		h1.whiteBackground, b.whiteBackground{
+
+			font-weight:50;
+			color:#fff;
+		}
+		a.whiteBackground{
+
+			font-weight:50;
+		}
+
+	  	body {  color: #555; background: #fff ; background:url(img/Image_fond_1110x785px.jpg);background-size:1110px ;background-repeat:no-repeat;background-position:center 120px;width : 960px; margin-left: auto; margin-right: auto; font: normal 14px "TheSerif", sans-serif;  }
+
+	  	.container {
+	  		float: left;
+
+		}
+		.containerPanel {
+	      	width: 130px;
+	      	height: 30px;
+	  		float:left;
+		}
+		.imagePanel {
+	      	width: 40px;
+	      	height: 30px;
+	  		float:left;
+
+		}
+		.imaginaryTopic {
+	      	width: 140px;
+	      	/*height: 30px;*/
+	  		float:left;
+			line-height: 1.2em;
+	  		padding: .3em .1em .0em;
+
+		}
+		#textForPopUp{
+			width:525px;
+		}
+		.teamTitle{
+					font: normal 16.8px "TheSerif", sans-serif;
+					line-height: 1.2em;
+					font-size: 16.8px;
+					margin-bottom: 10px;
+					position: relative;
+		}
+
+		.show-in-print {
+	      	width: 30px;
+	      	height: 30px;
+	  		float:left;
+		}
+
+		.logo-in-print {
+	  		float:left;
+	  		width: 240px;
+	  		height:120px;
+		}
+		.body-in-print {
+
+	      	width: 960px;
+	      	height: 338.5px;
+	  		float:left;
+		}
+		.body-in-popup {
+
+	      	width: 541.8px;
+	      	height: auto;
+	  		float:left;
+		}
+		#linktoPage{
+			float:right;
+		}
+		input[type="range"] {
+		    position: relative;
+		    margin-left: 1em;
+		}
+		input[type="range"]:after,
+		input[type="range"]:before {
+		    position: absolute;
+		    top: -0.40em;
+		    color: #000;
+		}
+		input[type="range"]:before {
+		    left:0em;
+		    content: attr(min);
+		}
+		input[type="range"]:after {
+		    right: 0em;
+		    content: attr(max);
+		}
+
+		ul#slider {
+ 			list-style-type: none;
+ 			-webkit-padding-start: 0px;
+ 			-moz-padding-start: 0px;
+ 			padding-start: 0px;
+ 		}
+
+	  	.row {
+	      width: 960px;
+	      margin-left: 0px;
+	      *zoom: 1;
+	    }
+	    .row:before, .row:after {
+	      display: table;
+	      content: "";
+	    }
+	    .row:after {
+	      clear: both;
+	    }
+	    #gradient{
+  			background-image:linear-gradient(rgba(226,224,211,.8), rgba(228,232,241,.8));
+	  		padding: .0em 0.0em 1.2em 0.0em;
+	    }
+  		#chart{
+  			width:600px;
+  		}
+  		#fifaRanking{
+  			background-color:rgb(50,72,114); 
+  			color:white;
+  			min-width: 95%; 
+  			display: inline-block;
+  			-webkit-border-radius: .2em; 
+			-moz-border-radius: .2em;
+			border-radius: .2em;
+			padding: .2em 0.7em 0em 0.5em;
+  		}
+
+		.button {
+			float:left;
+			width: 330px;
+	      	height: 35px;
+			display: inline-block;
+			outline: none;
+			cursor: pointer;
+			text-align: left;
+			text-decoration: none;
+			font: 15px/100% TheSerif, sans-serif;
+			padding: .35em 1.5em .45em;
+			text-shadow: 0 1px 1px rgba(0,0,0,.3);
+			-webkit-border-radius: .5em; 
+			-moz-border-radius: .5em;
+			border-radius: .5em;
+			-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+			-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+			box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		}
+		.buttonC {
+			float:right;
+			width: 30px;
+	      	height: 14px;
+			display: inline-block;
+			outline: none;
+			cursor: pointer;
+			text-align: left;
+			text-decoration: none;
+			font: 8px/100% TheSerif, sans-serif;
+			padding: .35em .5em .45em;
+			text-shadow: 0 1px 1px rgba(0,0,0,.3);
+			-webkit-border-radius: .5em; 
+			-moz-border-radius: .5em;
+			border-radius: .5em;
+			-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+			-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+			box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		}
+		.buttonN {
+			float:right;
+			width: 55px;
+	      	height: 23px;
+			display: inline-block;
+			outline: none;
+			cursor: pointer;
+			text-align: left;
+			text-decoration: none;
+			font: 15px/100% TheSerif, sans-serif;
+			padding: .25em 0.5em .45em;
+			text-shadow: 0 1px 1px rgba(0,0,0,.3);
+			-webkit-border-radius: .5em; 
+			-moz-border-radius: .5em;
+			border-radius: .5em;
+			-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+			-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+			box-shadow: 0 1px 2px rgba(0,0,0,.2);
+		}
+		.button:hover .buttonC:hover .buttonN:hover{
+			text-decoration: none;
+		}
+		.button:active .buttonC:active .buttonN:active{
+			position: relative;
+			top: 1px;
+		}
+		.grey {
+			color: #fff;
+			border: solid 1px #afafaf;
+			background: #6e6e6e;
+			background: -webkit-gradient(linear, left top, left bottom, from(rgb(58,68,86)), to(rgb(58,68,86)));
+			background: -moz-linear-gradient(top,  rgb(58,68,86),  rgb(58,68,86));
+			filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='rgb(58,68,86)', endColorstr='rgb(58,68,86)');
+		}
+		.grey:hover {
+
+			color: #fff;
+			background: #616161;
+			background: -webkit-gradient(linear, left top, left bottom, from(rgb(65,78,98)), to(rgb(65,78,98)));
+			background: -moz-linear-gradient(top,  rgb(65,78,98),  rgb(65,78,98));
+			filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='rgb(65,78,98)', endColorstr='rgb(65,78,98)');
+		}
+		.grey:active {
+			color: #fff;
+			background: -webkit-gradient(linear, left top, left bottom, from(rgb(43,49,61)), to(rgb(43,49,61)));
+			background: -moz-linear-gradient(top,  rgb(43,49,61),  rgb(43,49,61));
+			filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='rgb(43,49,61)', endColorstr='rgb(43,49,61)');
+		}
+		#teamSelection {
+		  position: absolute;
+		  width: auto;
+		  height: auto;
+		  padding: 10px;
+     	  border : 1px outset rgb(225,225,225);
+		  background-color: #fff;
+		  /-webkit-border-radius: 2px;
+		  -moz-border-radius: 2px;
+		  border-radius: 2px;
+		  -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+		  -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+		  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+		  /**pointer-events: none;**/
+     	  opacity: 0.93;
+    	  filter:alpha(opacity=93);
+    	  -moz-opacity:0.93;
+		}
+
+		#teamSelection.hidden {
+		  display: none;
+		}
+
+		#winningTeam {
+		  position: absolute;
+		  width: auto;
+		  height: auto;
+		  padding: 10px;
+     	  border : 1px outset rgb(225,225,225);
+		  background-color: #fff;
+		  /-webkit-border-radius: 2px;
+		  -moz-border-radius: 2px;
+		  border-radius: 2px;
+		  -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+		  -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+		  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+		  /**pointer-events: none;
+     	  opacity: 0.95;
+    	  filter:alpha(opacity=95);
+    	  -moz-opacity:0.95;**/
+		}
+
+		#winningTeam.hidden {
+		  display: none;
+		}
+		#tooltip {
+		  position: absolute;
+		  width: 140px;
+		  height: auto;
+		  padding: 2px;
+     	  border : 1px outset rgb(225,225,225);
+		  background-color: #fff;
+		  /-webkit-border-radius: 2px;
+		  -moz-border-radius: 2px;
+		  border-radius: 2px;
+		  -webkit-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+		  -moz-box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4);
+		  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+		  pointer-events: none;
+		}
+
+		#tooltip.hidden {
+		  display: none;
+		}
+  	</style>
+</head>
+<body>
+
+	
+	<div class="row">
+		<div class="">
+			<a href="http://www.oecdbetterlifeindex.org" target="_blank" id="logo"><img src="img/logo-bli.png" alt="" class="logo-in-print"/></a>
+
+			<a href="http://www.oecd.org" id="linktoPage" target="_blank">oecd.org</a>
+      	</div>
+
+	</div>
+	<div class="row">
+		<h1 class="whiteBackground">What makes a football team?</h1>
+		<b class="whiteBackground">The Better Life Index meets Fantasy Football. Since its launch in 2011, people have been using the <a class="whiteBackground" href="http://www.oecdbetterlifeindex.org/" target="_blank">OECD Better Life Index</a> to share their ideas on what makes for a better life. Using the same framework of ranking 11 topics, play the game and build the best team according to the factors most important to you.</b>
+	</div>
+	<br>
+	<div class="row" id="gradient">
+		<div class="container" id="chart"></div>
+		<h2>Build your team</h2>
+		<p>Move the sliders to get the right mix and win the World Cup.<br>Hover over each icon for more information.</p>
+		<ul id="slider">
+		<li><div class="imagePanel" id="iconeHousing"><img src="img/Housing.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Training Facilities</div>
+		<input type="range" class="containerPanel" id="panelHousing" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()"></li>
+		<li><div class="imagePanel" id="iconeIncome"><img src="img/Income.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Team bonus</div>
+		<input type="range" class="containerPanel" id="panelIncome" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		<li><div class="imagePanel" id="iconeJobs"><img src="img/Jobs.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Regular club football</div>
+		<input type="range" class="containerPanel" id="panelJobs" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		<li><div class="imagePanel" id="iconeCommunity"><img src="img/Community.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Team morale</div>
+		<input type="range" class="containerPanel" id="panelCommunity" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		<li><div class="imagePanel" id="iconeEducation"><img src="img/Education.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Team tactics</div>
+		<input type="range" class="containerPanel" id="panelEducation" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		<li><div class="imagePanel" id="iconeEnvironment"><img src="img/Environment.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Playing conditions</div>
+		<input type="range" class="containerPanel" id="panelEnvironment" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		<li><div class="imagePanel" id="iconeCivic"><img src="img/CivicEngagement.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Fair Play</div>
+		<input type="range" class="containerPanel" id="panelCivicEngagement" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		<li><div class="imagePanel" id="iconeHealth"><img src="img/Health.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Fitness</div>
+		<input type="range" class="containerPanel" id="panelHealth" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		<li><div class="imagePanel" id="iconeLife"><img src="img/LifeSatisfaction.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Fan support</div>
+		<input type="range" class="containerPanel" id="panelLifeSatisfaction" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		<li><div class="imagePanel" id="iconeSafety"><img src="img/Safety.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">Referees</div>
+		<input type="range" class="containerPanel" id="panelSafety" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		<li><div class="imagePanel" id="iconeWorkLife"><img src="img/WorkLifeBalance.png" alt="" class="show-in-print"/></div><div class="imaginaryTopic">WAGS</div>
+		<input type="range" class="containerPanel" id="panelWorkLife" min="0" max="100" onchange="update(this.id,this.value),calculWinner(), calculFIFAWinner()" ></li>
+		</ul>
+		<br>
+		<button class="button grey" id="Compare" type="submit" value="" title="CompareCountry" onclick="openPopUp()">Play the game</button>
+		<br>
+		<button class="button grey" id="Reset" type="submit" value="" title="resetSettings" onclick="reset()">Reset settings</button><br>
+	</div>
+	</div>
+	<div id="tooltip" class="hidden"><p id="defTopic"></p></div>
+	<div id="teamSelection" class="hidden">
+			<button class="buttonC grey" id="close" type="submit" value="" title="closePopUp" onclick="closePopUp()">Close</button>
+			<h2>Select your game:</h2>
+			<br>
+			<table style="width:300px">
+				<tr>
+				  <td class="teamTitle">Team A</td>
+				  <td class="teamTitle">Team B</td>
+				</tr>
+				<br>
+				<tr>
+				  <td>
+				  	<select id="selectorTeamA" name="teamA"  class="input-small" onchange="chartTeamA(this.value)">
+			            <option selected="selected" value="both">Select a Team</option>
+						<option value="DZA">Algeria</option>
+						<option value="ARG">Argentina</option>
+						<option value="AUS">Australia</option>
+						<option value="BEL">Belgium</option>
+						<option value="BIH">Bosnia</option>
+						<option value="BRA">Brazil</option>
+						<option value="CMR">Cameroon</option>
+						<option value="CHL">Chile</option>
+						<option value="COL">Colombia</option>
+						<option value="CRI">Costa Rica</option>
+						<option value="CIV">Côte d'Ivoire</option>
+						<option value="HRV">Croatia</option>
+						<option value="ECU">Ecuador</option>
+						<option value="GBR">England</option>
+						<option value="FRA">France</option>
+						<option value="DEU">Germany</option>
+						<option value="GHA">Ghana</option>
+						<option value="GRC">Greece</option>
+						<option value="HND">Honduras</option>
+						<option value="IRN">Iran</option>
+						<option value="ITA">Italy</option>
+						<option value="JPN">Japan</option>
+						<option value="KOR">Korea, Republic of</option>
+						<option value="MEX">Mexico</option>
+						<option value="NLD">Netherlands</option>
+						<option value="NGA">Nigeria</option>
+						<option value="PRT">Portugal</option>
+						<option value="RUS">Russian Federation</option>
+						<option value="ESP">Spain</option>
+						<option value="CHE">Switzerland</option>
+						<option value="USA">United States</option>
+						<option value="URY">Uruguay</option>
+			         </select>   
+			      </td>
+				  <td>				  	
+				  	<select id="selectorTeamB" name="teamB"  class="input-small" onchange="chartTeamB(this.value)">
+			            <option selected="selected" value="both">Select a Team</option>
+						<option value="DZA">Algeria</option>
+						<option value="ARG">Argentina</option>
+						<option value="AUS">Australia</option>
+						<option value="BEL">Belgium</option>
+						<option value="BIH">Bosnia</option>
+						<option value="BRA">Brazil</option>
+						<option value="CMR">Cameroon</option>
+						<option value="CHL">Chile</option>
+						<option value="COL">Colombia</option>
+						<option value="CRI">Costa Rica</option>
+						<option value="CIV">Côte d'Ivoire</option>
+						<option value="HRV">Croatia</option>
+						<option value="ECU">Ecuador</option>
+						<option value="GBR">England</option>
+						<option value="FRA">France</option>
+						<option value="DEU">Germany</option>
+						<option value="GHA">Ghana</option>
+						<option value="GRC">Greece</option>
+						<option value="HND">Honduras</option>
+						<option value="IRN">Iran</option>
+						<option value="ITA">Italy</option>
+						<option value="JPN">Japan</option>
+						<option value="KOR">Korea, Republic of</option>
+						<option value="MEX">Mexico</option>
+						<option value="NLD">Netherlands</option>
+						<option value="NGA">Nigeria</option>
+						<option value="PRT">Portugal</option>
+						<option value="RUS">Russian Federation</option>
+						<option value="ESP">Spain</option>
+						<option value="CHE">Switzerland</option>
+						<option value="USA">United States</option>
+						<option value="URY">Uruguay</option>
+			         </select> 
+			      </td>
+				</tr>
+			</table>
+			<button class="buttonN grey" id="Compare" type="submit" value="" title="CompareCountry" onclick="openPopUp2(),calculWinner(), calculFIFAWinner()">Play</button>
+
+	</div>
+	<div id="winningTeam" class="hidden">
+			<button class="buttonC grey" id="close" type="submit" value="" title="closePopUp" onclick="closePopUp()">Close</button>
+
+			<h2>The preferences of users in:</h2>
+			<table style="width:450px">
+				<tr>
+				  <td class="teamTitle" id="teamA">Team A</td>
+				  <td class="teamTitle" id="teamB">Team B</td>
+				</tr>
+				<tr>
+				  <td id="chartA">
+			      </td>
+				  <td id="chartB">				  	
+			      </td>
+				</tr>
+			</table>
+
+			<h2>lead to the following match:</h2>
+			<h1 id="theWinner"></h1><br>
+			<div id="chartC"></div>
+			<p id="textForPopUp"><i>Match results reflect a comparison between your preferences and those of users in the selected countries.</i></p>
+			<h2>Create Your Better Life Index:</h2>
+			<div><a href="http://www.oecdbetterlifeindex.org/responses/" target=_blank><img src="img/BLI_Screen.png" alt="" class="body-in-popup" /></a></div><br>
+			<hr>
+			<div id="fifaRanking">
+			<h2>What does the FIFA ranking say?</h2>
+			<h5>According to the Fifa Ranking (from June, 2014), <strong><span id="fifaWinner">XX</span></strong> wins!</h5></div>
+	</div>
+	<script>
+		document.cookie= "housingV = 50";
+		document.cookie="incomeV = 50";
+		document.cookie="jobsV = 50";
+		document.cookie="communityV = 50";
+		document.cookie="educationV = 50";
+		document.cookie="environmentV = 50";
+		document.cookie="civicEngagementV = 50";
+		document.cookie= "healthV =50";
+		document.cookie="lifeSatisfactionV = 50";
+		document.cookie="safetyV = 50";
+		document.cookie="workLifeV = 50";
+
+		document.cookie="housingW = 9.09";
+		document.cookie="incomeW = 9.09";
+		document.cookie="jobsW = 9.09";
+		document.cookie="communityW = 9.09";
+		document.cookie="educationW = 9.09";
+		document.cookie="environmentW = 9.09";
+		document.cookie="civicEngagementW = 9.09";
+		document.cookie="healthW = 9.09";
+		document.cookie="lifeSatisfactionW = 9.09";
+		document.cookie="safetyW = 9.09";
+		document.cookie="workLifeW = 9.09";
+
+
+
+/**----------------Nodes creation----------------------------- **/
+		margin = 50,
+	    width = 600,
+	    height = 568;
+		
+/**----------------tooltip--------------------------------------------------------------**/
+		d3.selectAll("#iconeHousing")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>Quality of the training facilities</b> <br>corresponds to <i>Housing</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+
+		d3.selectAll("#iconeIncome")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>Prize money when you win</b><br>corresponds to <i>Income</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+		d3.selectAll("#iconeJobs")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>Players play regular for their respective clubs</b><br>corresponds to <i>Jobs</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+		d3.selectAll("#iconeCommunity")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>High team spirit</b><br>corresponds to <i>Community</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+		d3.selectAll("#iconeEducation")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>Experienced coaches and strategic play</b><br>corresponds to <i>Education</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+		d3.selectAll("#iconeEnvironment")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>Heat, humidity, altitude</b><br>corresponds to <i>Environment</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+		d3.selectAll("#iconeCivic")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>Good sportsmanship</b><br>corresponds to <i>Civic Engagement</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+		d3.selectAll("#iconeHealth")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>How fit you are</b><br>corresponds to <i>Health</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+		d3.selectAll("#iconeLife")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>Quality of fan support</b><br> corresponds to <i>Life Satisfaction</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+		d3.selectAll("#iconeSafety")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html(
+		                    	"<b>Experienced referees</b><br> corresponds to <i>Safety</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+		d3.selectAll("#iconeWorkLife")
+			.on("mouseover",function(){
+		        var xPosition = d3.event.pageX +20;
+		        var yPosition = d3.event.pageY  ;
+
+		        d3.select("#tooltip")
+		                    .style("left",xPosition+"px")
+		                    .style("top", yPosition+"px") 
+		                    .select("#defTopic")
+		                    .html("<b>WAGS (Wives and Girlfriends): Quality time with your loved one</b><br> corresponds to <i>Work-Life Balance</i> in the Better Life Index");  
+
+		          d3.select("#tooltip").classed("hidden", false);
+		    })
+		    .on("mouseout",function(d){
+		          d3.select("#tooltip").classed("hidden", true);
+		    });
+
+
+/**---------------------draw chart------------------------------------------------**/		    
+	    chart = d3.select("#chart").append("svg")
+	               .attr("width", width)
+	               .attr("height", height);
+
+		var color=d3.scale.ordinal()
+			.domain(["Housing","Jobs","Income","Community","Education","Environment","Civic Engagement","Health","Life Satisfaction","Safety","Work Life Balance"])
+			.range(["#3DA594","#237FBD","#2CA3E0","#CE485D","#7EA943","#30A457","#DCA922","#7C3A73","#E26237","#606060","#962828"]);
+
+        var radius = d3.scale.linear().range([0,20]);
+
+        var padding=1;
+
+        d3.json("data/topics.json", function(error,data){
+
+            var nodes=data.map(function(d) {
+              return {
+              	topic: d.topic,
+              	def: d.defTopic,
+                radius: radius(Math.sqrt(9.09/Math.PI)),
+                color: color(d.topic)
+              }
+            });
+            
+            var force = d3.layout.force()
+              .nodes(nodes)
+              .size([width, height])
+              .gravity(.05)
+              .charge(10)
+              .on("tick", tick)
+              .start();
+
+            var circle = chart.selectAll("a.node")
+              .data(nodes)
+              .enter().append("a")
+              .attr("class","nodes")
+              .call(force.drag);
+
+
+            circle.append("circle")
+              .attr("r", function(d) { return d.radius; })
+              .style("stroke", function(d) { return d.color; })
+              .style("fill", "white");
+
+			circle.append("image")
+			    .attr("xlink:href", function(d){
+
+			    	if (d.topic == "Housing")
+			    		return"img/Ballon_Housing.svg"
+			    	else if (d.topic == "Income")
+			    		return"img/Ballon_Income.svg"
+			    	else if (d.topic == "Jobs")
+			    		return"img/Ballon_Jobs.svg"
+			    	else if (d.topic == "Community")
+			    		return"img/Ballon_Community.svg"
+			    	else if (d.topic == "Education")
+			    		return"img/Ballon_Education.svg"
+			    	else if (d.topic == "Environment")
+			    		return"img/Ballon_Environment.svg"
+			    	else if (d.topic == "Civic Engagement")
+			    		return"img/Ballon_CivicEngagement.svg"
+			    	else if (d.topic == "Health")
+			    		return"img/Ballon_Health.svg"
+			    	else if (d.topic == "Life Satisfaction")
+			    		return"img/Ballon_LifeSatisfaction.svg"
+			    	else if (d.topic == "Safety")
+			    		return"img/Ballon_Safety.svg"
+			    	else if (d.topic == "Work Life Balance")
+			    		return"img/Ballon_WorkLifeBalance.svg"
+			    })
+			    .attr("x", function(d) {return -240/100*d.radius})
+			    .attr("y", function(d) {return -235/100*d.radius})
+			    .attr("width", function(d) {return 480/100*d.radius})
+			    .attr("height", function(d) {return 480/100*d.radius});
+
+
+
+            function tick(e) {
+              circle
+                .each(cluster(10 * e.alpha * e.alpha))
+                .each(collide(.5))
+                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+            }
+
+            // Move d to be adjacent to the cluster node.
+            function cluster(alpha) {
+              var max = {};
+
+              // Find the largest node for each cluster.
+              nodes.forEach(function(d) {
+                if (!(d.color in max) || (d.radius > max[d.color].radius)) {
+                  max[d.color] = d;
+                }
+              });
+
+              return function(d) {
+                var node = max[d.color],
+                  l,
+                  r,
+                  x,
+                  y,
+                  i = -1;
+
+                if (node == d) return;
+                x = d.x - node.x;
+                y = d.y - node.y;
+                l = Math.sqrt(x * x + y * y);
+                r = d.radius + node.radius;
+                if (l != r) {
+                  l = (l - r) / l * alpha;
+                  d.x -= x *= l;
+                  d.y -= y *= l;
+                  node.x += x;
+                  node.y += y;
+                }
+              };
+            }
+            
+            function collide(alpha) {
+              var quadtree = d3.geom.quadtree(nodes);
+              return function(d) {
+                var r = d.radius + radius.domain()[1] + padding,
+                  nx1 = d.x - r,
+                  nx2 = d.x + r,
+                  ny1 = d.y - r,
+                  ny2 = d.y + r;
+                quadtree.visit(function(quad, x1, y1, x2, y2) {
+                  if (quad.point && (quad.point !== d)) {
+                    var x = d.x - quad.point.x,
+                        y = d.y - quad.point.y,
+                        l = Math.sqrt(x * x + y * y),
+                        r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+                    if (l < r) {
+                        l = (l - r) / l * alpha;
+                        d.x -= x *= l;
+                        d.y -= y *= l;
+                        quad.point.x += x;
+                        quad.point.y += y;
+                    }
+                  }
+                  return x1 > nx2
+                      || x2 < nx1
+                      || y1 > ny2
+                      || y2 < ny1;
+                });
+              };
+            }
+
+        });
+
+		function update(dimension,panelValue) {
+
+			if(dimension=="panelHousing")
+				document.cookie = "housingV="+panelValue+";";
+			if(dimension=="panelIncome")
+				document.cookie = "incomeV="+panelValue+";";
+			if(dimension=="panelJobs")
+				document.cookie = "jobsV="+panelValue+";";
+			if(dimension=="panelCommunity")
+				document.cookie = "communityV="+panelValue+";";
+			if(dimension=="panelEducation")
+				document.cookie = "educationV="+panelValue+";";
+			if(dimension=="panelEnvironment")
+				document.cookie = "environmentV="+panelValue+";";
+			if(dimension=="panelCivicEngagement")
+				document.cookie = "civicEngagementV="+panelValue+";";
+			if(dimension=="panelHealth")
+				document.cookie = "healthV="+panelValue+";";
+			if(dimension=="panelLifeSatisfaction")
+				document.cookie = "lifeSatisfactionV="+panelValue+";";
+			if(dimension=="panelSafety")
+				document.cookie = "safetyV="+panelValue+";";
+			if(dimension=="panelWorkLife")
+				document.cookie = "workLifeV="+panelValue+";";
+			
+			var housingTemp = 100* parseFloat(getCookie("housingV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+
+			var incomeTemp = 100* parseFloat(getCookie("incomeV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+			
+			var jobsTemp = 100* parseFloat(getCookie("jobsV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+			
+			var communityTemp = 100* parseFloat(getCookie("communityV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+			
+			var educationTemp = 100* parseFloat(getCookie("educationV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+			
+			var environmentTemp = 100* parseFloat(getCookie("environmentV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+			
+			var civicEngagementTemp = 100* parseFloat(getCookie("civicEngagementV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+			
+			var healthTemp = 100* parseFloat(getCookie("healthV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+			
+			var lifeSatisfactionTemp = 100* parseFloat(getCookie("lifeSatisfactionV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+
+			var safetyTemp = 100* parseFloat(getCookie("safetyV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+			
+			var workLifeTemp = 100* parseFloat(getCookie("workLifeV")) / (parseFloat(getCookie("housingV"))+parseFloat(getCookie("incomeV"))+parseFloat(getCookie("jobsV"))+parseFloat(getCookie("communityV"))+parseFloat(getCookie("educationV"))+parseFloat(getCookie("environmentV"))+parseFloat(getCookie("civicEngagementV"))+parseFloat(getCookie("healthV"))+parseFloat(getCookie("lifeSatisfactionV"))+parseFloat(getCookie("safetyV"))+parseFloat(getCookie("workLifeV")))
+
+
+			document.cookie = "housingW="+housingTemp+";";
+			document.cookie="housingW ="+housingTemp+";";
+			document.cookie="incomeW ="+incomeTemp+";";
+			document.cookie="jobsW ="+jobsTemp+";";
+			document.cookie="communityW ="+communityTemp+";";
+			document.cookie="educationW ="+educationTemp+";";
+			document.cookie="environmentW ="+environmentTemp+";";
+			document.cookie="civicEngagementW ="+civicEngagementTemp+";";
+			document.cookie="healthW ="+healthTemp+";";
+			document.cookie="lifeSatisfactionW ="+lifeSatisfactionTemp+";";
+			document.cookie="safetyW ="+safetyTemp+";";
+			document.cookie="workLifeW = "+workLifeTemp+";";
+
+
+
+
+		  // update the circle radius
+
+		  chart.selectAll("circle") 
+		  	.transition(2000)
+		    .attr("r", function(d) { 
+		    	if(d.topic=="Housing")
+		    		return radius(Math.sqrt(housingTemp/Math.PI));
+		    	else if (d.topic == "Income")
+		    		return radius(Math.sqrt(incomeTemp/Math.PI));
+		    	else if (d.topic == "Jobs")
+		    		return radius(Math.sqrt(jobsTemp/Math.PI));
+		    	else if (d.topic == "Community")
+		    		return radius(Math.sqrt(communityTemp/Math.PI));
+		    	else if (d.topic == "Education")
+		    		return radius(Math.sqrt(educationTemp/Math.PI));
+		    	else if (d.topic == "Environment")
+		    		return radius(Math.sqrt(environmentTemp/Math.PI));
+		    	else if (d.topic == "Civic Engagement")
+		    		return radius(Math.sqrt(civicEngagementTemp/Math.PI));
+		    	else if (d.topic == "Health")
+		    		return radius(Math.sqrt(healthTemp/Math.PI));
+		    	else if (d.topic == "Life Satisfaction")
+		    		return radius(Math.sqrt(lifeSatisfactionTemp/Math.PI));
+		    	else if (d.topic == "Safety")
+		    		return radius(Math.sqrt(safetyTemp/Math.PI));
+		    	else if (d.topic == "Work Life Balance")
+		    		return radius(Math.sqrt(workLifeTemp/Math.PI)); 
+		    });
+
+			chart.selectAll("image")
+				.transition(2000)
+			    .attr("x", function(d) {
+			    	if(d.topic=="Housing")
+			    		return -240/100*radius(Math.sqrt(housingTemp/Math.PI));
+			    	else if (d.topic == "Income")
+			    		return -240/100*radius(Math.sqrt(incomeTemp/Math.PI));
+			    	else if (d.topic == "Jobs")
+			    		return -240/100*radius(Math.sqrt(jobsTemp/Math.PI));
+			    	else if (d.topic == "Community")
+			    		return -240/100*radius(Math.sqrt(communityTemp/Math.PI));
+			    	else if (d.topic == "Education")
+			    		return -240/100*radius(Math.sqrt(educationTemp/Math.PI));
+			    	else if (d.topic == "Environment")
+			    		return -240/100*radius(Math.sqrt(environmentTemp/Math.PI));
+			    	else if (d.topic == "Civic Engagement")
+			    		return -240/100*radius(Math.sqrt(civicEngagementTemp/Math.PI));
+			    	else if (d.topic == "Health")
+			    		return -240/100*radius(Math.sqrt(healthTemp/Math.PI));
+			    	else if (d.topic == "Life Satisfaction")
+			    		return -240/100*radius(Math.sqrt(lifeSatisfactionTemp/Math.PI));
+			    	else if (d.topic == "Safety")
+			    		return -240/100*radius(Math.sqrt(safetyTemp/Math.PI));
+			    	else if (d.topic == "Work Life Balance")
+			    		return -240/100*radius(Math.sqrt(workLifeTemp/Math.PI));
+			    })
+			    .attr("y", function(d) {
+			    	if(d.topic=="Housing")
+			    		return -235/100*radius(Math.sqrt(housingTemp/Math.PI));
+			    	else if (d.topic == "Income")
+			    		return -235/100*radius(Math.sqrt(incomeTemp/Math.PI));
+			    	else if (d.topic == "Jobs")
+			    		return -235/100*radius(Math.sqrt(jobsTemp/Math.PI));
+			    	else if (d.topic == "Community")
+			    		return -235/100*radius(Math.sqrt(communityTemp/Math.PI));
+			    	else if (d.topic == "Education")
+			    		return -235/100*radius(Math.sqrt(educationTemp/Math.PI));
+			    	else if (d.topic == "Environment")
+			    		return -235/100*radius(Math.sqrt(environmentTemp/Math.PI));
+			    	else if (d.topic == "Civic Engagement")
+			    		return -235/100*radius(Math.sqrt(civicEngagementTemp/Math.PI));
+			    	else if (d.topic == "Health")
+			    		return -235/100*radius(Math.sqrt(healthTemp/Math.PI));
+			    	else if (d.topic == "Life Satisfaction")
+			    		return -235/100*radius(Math.sqrt(lifeSatisfactionTemp/Math.PI));
+			    	else if (d.topic == "Safety")
+			    		return -235/100*radius(Math.sqrt(safetyTemp/Math.PI));
+			    	else if (d.topic == "Work Life Balance")
+			    		return -235/100*radius(Math.sqrt(workLifeTemp/Math.PI));
+			    })
+			    .attr("width", function(d) {
+			    	if(d.topic=="Housing")
+			    		return 480/100*radius(Math.sqrt(housingTemp/Math.PI));
+			    	else if (d.topic == "Income")
+			    		return 480/100*radius(Math.sqrt(incomeTemp/Math.PI));
+			    	else if (d.topic == "Jobs")
+			    		return 480/100*radius(Math.sqrt(jobsTemp/Math.PI));
+			    	else if (d.topic == "Community")
+			    		return 480/100*radius(Math.sqrt(communityTemp/Math.PI));
+			    	else if (d.topic == "Education")
+			    		return 480/100*radius(Math.sqrt(educationTemp/Math.PI));
+			    	else if (d.topic == "Environment")
+			    		return 480/100*radius(Math.sqrt(environmentTemp/Math.PI));
+			    	else if (d.topic == "Civic Engagement")
+			    		return 480/100*radius(Math.sqrt(civicEngagementTemp/Math.PI));
+			    	else if (d.topic == "Health")
+			    		return 480/100*radius(Math.sqrt(healthTemp/Math.PI));
+			    	else if (d.topic == "Life Satisfaction")
+			    		return 480/100*radius(Math.sqrt(lifeSatisfactionTemp/Math.PI));
+			    	else if (d.topic == "Safety")
+			    		return 480/100*radius(Math.sqrt(safetyTemp/Math.PI));
+			    	else if (d.topic == "Work Life Balance")
+			    		return 480/100*radius(Math.sqrt(workLifeTemp/Math.PI));
+			    })
+			    .attr("height", function(d) {
+			    	if(d.topic=="Housing")
+			    		return 480/100*radius(Math.sqrt(housingTemp/Math.PI));
+			    	else if (d.topic == "Income")
+			    		return 480/100*radius(Math.sqrt(incomeTemp/Math.PI));
+			    	else if (d.topic == "Jobs")
+			    		return 480/100*radius(Math.sqrt(jobsTemp/Math.PI));
+			    	else if (d.topic == "Community")
+			    		return 480/100*radius(Math.sqrt(communityTemp/Math.PI));
+			    	else if (d.topic == "Education")
+			    		return 480/100*radius(Math.sqrt(educationTemp/Math.PI));
+			    	else if (d.topic == "Environment")
+			    		return 480/100*radius(Math.sqrt(environmentTemp/Math.PI));
+			    	else if (d.topic == "Civic Engagement")
+			    		return 480/100*radius(Math.sqrt(civicEngagementTemp/Math.PI));
+			    	else if (d.topic == "Health")
+			    		return 480/100*radius(Math.sqrt(healthTemp/Math.PI));
+			    	else if (d.topic == "Life Satisfaction")
+			    		return 480/100*radius(Math.sqrt(lifeSatisfactionTemp/Math.PI));
+			    	else if (d.topic == "Safety")
+			    		return 480/100*radius(Math.sqrt(safetyTemp/Math.PI));
+			    	else if (d.topic == "Work Life Balance")
+			    		return 480/100*radius(Math.sqrt(workLifeTemp/Math.PI));
+			    });
+		}
+
+		function getCookie(cname) {
+		    var name = cname + "=";
+		    var ca = document.cookie.split(';');
+		    for(var i=0; i<ca.length; i++) {
+		        var c = ca[i].trim();
+		        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+		    }
+		    return "";
+		}
+
+		function openPopUp(){
+
+			d3.select("#winningTeam").classed("hidden", true);
+
+	        var xPosition = document.getElementById("chart").offsetLeft +105 ;
+	        var yPosition = document.getElementById("chart").offsetTop  +105;
+
+	        d3.select("#teamSelection")
+            .style("left",xPosition+"px")
+            .style("top", yPosition+"px");
+
+			d3.select("#teamSelection").classed("hidden", false);
+		}
+		function openPopUp2(){
+
+			if(document.getElementById("selectorTeamA").value == "both" || document.getElementById("selectorTeamB").value == "both" || document.getElementById("selectorTeamA").value == document.getElementById("selectorTeamB").value){
+
+				alert("Please, select the teams for the Game!");
+			}
+			else{
+				d3.select("#teamSelection").classed("hidden", true);
+
+		        var xPosition = document.getElementById("chart").offsetLeft +5 ;
+		        var yPosition = document.getElementById("chart").offsetTop  +25;
+
+		        d3.select("#winningTeam")
+	            .style("left",xPosition+"px")
+	            .style("top", yPosition+"px");
+
+				d3.select("#winningTeam").classed("hidden", false);
+			}
+		}
+		
+		function closePopUp(){
+
+			d3.select("#teamSelection").classed("hidden", true);
+			d3.select("#winningTeam").classed("hidden", true);
+
+		}
+
+		function chartTeamA(isocodeteamA){
+			var margin = 10,
+		    width = 180,
+		    height = 100;
+
+			d3.select("#chartA")
+				.selectAll("svg")
+	            .remove();			
+
+		    chartA = d3.select("#chartA").append("svg")
+		               .attr("width", width)
+		               .attr("height", height);
+
+
+			document.cookie= "teamA="+isocodeteamA+";";
+	        
+        	d3.tsv("data/fifa.tsv", function(error,nameC){ 		
+
+        		var teamAFilter=nameC.filter(function(d) {
+							  	  return(d.code==getCookie("teamA"))});
+        		var nameTeamA=teamAFilter[0].country;	        
+		        
+		        d3.select("#winningTeam")
+	            .select("#teamA")
+	            .text(function(){
+	                return nameTeamA;
+	            });
+	        });
+
+
+			var color=d3.scale.ordinal()
+				.domain(["Housing","Jobs","Income","Community","Education","Environment","Civic Engagement","Health","Life Satisfaction","Safety","Work Life Balance"])
+				.range(["#3DA594","#237FBD","#2CA3E0","#CE485D","#7EA943","#30A457","#DCA922","#7C3A73","#E26237","#606060","#962828"]);
+
+	        var radius = d3.scale.linear().range([0,6]);
+
+	        var padding=1;
+
+	        d3.tsv("http://www.oecdbetterlifeindex.org/bli/rest/indexes/stats/country", function(error,tsv){
+ 				var data=tsv.filter(function(d) {
+								  	  return(d.country==getCookie("teamA"))});
+				
+				var nodes=[{topic:"Housing",radius:radius(Math.sqrt(100*data[0].HO/Math.PI)), color:color("Housing")},
+				{topic:"Income",radius:radius(Math.sqrt(100*data[0].IW/Math.PI)), color:color("Income")},
+				{topic:"Jobs",radius:radius(Math.sqrt(100*data[0].JE/Math.PI)), color:color("Jobs")},
+				{topic:"Community",radius:radius(Math.sqrt(100*data[0].SC/Math.PI)), color:color("Community")},
+				{topic:"Education",radius:radius(Math.sqrt(100*data[0].ES/Math.PI)), color:color("Education")},
+				{topic:"Environment",radius:radius(Math.sqrt(100*data[0].EQ/Math.PI)), color:color("Environment")},
+				{topic:"Civic Engagement",radius:radius(Math.sqrt(100*data[0].CG/Math.PI)), color:color("Civic Engagement")},
+				{topic:"Health",radius:radius(Math.sqrt(100*data[0].HS/Math.PI)), color:color("Health")},
+				{topic:"Life Satisfaction",radius:radius(Math.sqrt(100*data[0].SW/Math.PI)), color:color("Life Satisfaction")},
+				{topic:"Safety",radius:radius(Math.sqrt(100*data[0].PS/Math.PI)), color:color("Safety")},
+				{topic:"Work Life Balance",radius:radius(Math.sqrt(100*data[0].WL/Math.PI)), color:color("Work Life Balance")}]	;			  
+
+	            
+	            var force = d3.layout.force()
+	              .nodes(nodes)
+	              .size([width, height])
+	              .gravity(.05)
+	              .charge(10)
+	              .on("tick", tick)
+	              .start();
+
+	            var circle = chartA.selectAll("a.node")
+	              .data(nodes)
+	              .enter().append("a")
+	              .attr("class","nodes")
+	              .call(force.drag);
+
+
+	            circle.append("circle")
+	              .attr("r", function(d) { return d.radius; })
+	              .style("stroke", function(d) { return d.color; })
+	              .style("fill", "white");
+
+				circle.append("image")
+				    .attr("xlink:href", function(d){
+
+				    	if (d.topic == "Housing")
+				    		return"img/Ballon_Housing.svg"
+				    	else if (d.topic == "Income")
+				    		return"img/Ballon_Income.svg"
+				    	else if (d.topic == "Jobs")
+				    		return"img/Ballon_Jobs.svg"
+				    	else if (d.topic == "Community")
+				    		return"img/Ballon_Community.svg"
+				    	else if (d.topic == "Education")
+				    		return"img/Ballon_Education.svg"
+				    	else if (d.topic == "Environment")
+				    		return"img/Ballon_Environment.svg"
+				    	else if (d.topic == "Civic Engagement")
+				    		return"img/Ballon_CivicEngagement.svg"
+				    	else if (d.topic == "Health")
+				    		return"img/Ballon_Health.svg"
+				    	else if (d.topic == "Life Satisfaction")
+				    		return"img/Ballon_LifeSatisfaction.svg"
+				    	else if (d.topic == "Safety")
+				    		return"img/Ballon_Safety.svg"
+				    	else if (d.topic == "Work Life Balance")
+				    		return"img/Ballon_WorkLifeBalance.svg"
+				    })
+			 		.attr("x", function(d) {return -240/100*d.radius})
+				    .attr("y", function(d) {return -235/100*d.radius})
+				    .attr("width", function(d) {return 480/100*d.radius})
+				    .attr("height", function(d) {return 480/100*d.radius});
+
+	            function tick(e) {
+	              circle
+	                .each(cluster(10 * e.alpha * e.alpha))
+	                .each(collide(.5))
+	                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+	            }
+
+	            // Move d to be adjacent to the cluster node.
+	            function cluster(alpha) {
+	              var max = {};
+
+	              // Find the largest node for each cluster.
+	              nodes.forEach(function(d) {
+	                if (!(d.color in max) || (d.radius > max[d.color].radius)) {
+	                  max[d.color] = d;
+	                }
+	              });
+
+	              return function(d) {
+	                var node = max[d.color],
+	                  l,
+	                  r,
+	                  x,
+	                  y,
+	                  i = -1;
+
+	                if (node == d) return;
+	                x = d.x - node.x;
+	                y = d.y - node.y;
+	                l = Math.sqrt(x * x + y * y);
+	                r = d.radius + node.radius;
+	                if (l != r) {
+	                  l = (l - r) / l * alpha;
+	                  d.x -= x *= l;
+	                  d.y -= y *= l;
+	                  node.x += x;
+	                  node.y += y;
+	                }
+	              };
+	            }
+	            
+	            function collide(alpha) {
+	              var quadtree = d3.geom.quadtree(nodes);
+	              return function(d) {
+	                var r = d.radius + radius.domain()[1] + padding,
+	                  nx1 = d.x - r,
+	                  nx2 = d.x + r,
+	                  ny1 = d.y - r,
+	                  ny2 = d.y + r;
+	                quadtree.visit(function(quad, x1, y1, x2, y2) {
+	                  if (quad.point && (quad.point !== d)) {
+	                    var x = d.x - quad.point.x,
+	                        y = d.y - quad.point.y,
+	                        l = Math.sqrt(x * x + y * y),
+	                        r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+	                    if (l < r) {
+	                        l = (l - r) / l * alpha;
+	                        d.x -= x *= l;
+	                        d.y -= y *= l;
+	                        quad.point.x += x;
+	                        quad.point.y += y;
+	                    }
+	                  }
+	                  return x1 > nx2
+	                      || x2 < nx1
+	                      || y1 > ny2
+	                      || y2 < ny1;
+	                });
+	              };
+	            }
+
+	        });
+		}
+
+
+		function chartTeamB(isocodeteamB){
+			var margin = 10,
+		    width = 180,
+		    height = 100;
+
+			d3.select("#chartB")
+				.selectAll("svg")
+	            .remove();	
+
+		    chartB = d3.select("#chartB").append("svg")
+		               .attr("width", width)
+		               .attr("height", height);
+
+			chartB.selectAll("circle")
+		            .remove();
+			chartB.selectAll("a")
+	            .remove();
+
+
+			document.cookie= "teamB="+isocodeteamB+";";
+
+        	d3.tsv("data/fifa.tsv", function(error,nameC){ 		
+
+        		var teamBFilter=nameC.filter(function(d) {
+							  	  return(d.code==getCookie("teamB"))});
+        		var nameTeamB=teamBFilter[0].country;	        
+		        
+		        d3.select("#winningTeam")
+	            .select("#teamB")
+	            .text(function(){
+	                return nameTeamB;
+	            });
+	        });
+
+			var color=d3.scale.ordinal()
+				.domain(["Housing","Jobs","Income","Community","Education","Environment","Civic Engagement","Health","Life Satisfaction","Safety","Work Life Balance"])
+				.range(["#3DA594","#237FBD","#2CA3E0","#CE485D","#7EA943","#30A457","#DCA922","#7C3A73","#E26237","#606060","#962828"]);
+
+	        var radius = d3.scale.linear().range([0,6]);
+
+	        var padding=1;
+
+	        d3.tsv("http://www.oecdbetterlifeindex.org/bli/rest/indexes/stats/country", function(error,tsv){
+	        	
+ 				var data=tsv.filter(function(d) {
+								  	  return(d.country==getCookie("teamB"))});
+
+				var nodes=[{topic:"Housing",radius:radius(Math.sqrt(100*data[0].HO/Math.PI)), color:color("Housing")},
+				{topic:"Income",radius:radius(Math.sqrt(100*data[0].IW/Math.PI)), color:color("Income")},
+				{topic:"Jobs",radius:radius(Math.sqrt(100*data[0].JE/Math.PI)), color:color("Jobs")},
+				{topic:"Community",radius:radius(Math.sqrt(100*data[0].SC/Math.PI)), color:color("Community")},
+				{topic:"Education",radius:radius(Math.sqrt(100*data[0].ES/Math.PI)), color:color("Education")},
+				{topic:"Environment",radius:radius(Math.sqrt(100*data[0].EQ/Math.PI)), color:color("Environment")},
+				{topic:"Civic Engagement",radius:radius(Math.sqrt(100*data[0].CG/Math.PI)), color:color("Civic Engagement")},
+				{topic:"Health",radius:radius(Math.sqrt(100*data[0].HS/Math.PI)), color:color("Health")},
+				{topic:"Life Satisfaction",radius:radius(Math.sqrt(100*data[0].SW/Math.PI)), color:color("Life Satisfaction")},
+				{topic:"Safety",radius:radius(Math.sqrt(100*data[0].PS/Math.PI)), color:color("Safety")},
+				{topic:"Work Life Balance",radius:radius(Math.sqrt(100*data[0].WL/Math.PI)), color:color("Work Life Balance")}]	;			  
+
+	            
+	            var force = d3.layout.force()
+	              .nodes(nodes)
+	              .size([width, height])
+	              .gravity(.05)
+	              .charge(10)
+	              .on("tick", tick)
+	              .start();
+
+	            var circle = chartB.selectAll("a.node")
+	              .data(nodes)
+	              .enter().append("a")
+	              .attr("class","nodes")
+	              .call(force.drag);
+
+
+	            circle.append("circle")
+	              .attr("r", function(d) { return d.radius; })
+	              .style("stroke", function(d) { return d.color; })
+	              .style("fill", "white");
+
+				circle.append("image")
+				    .attr("xlink:href", function(d){
+
+				    	if (d.topic == "Housing")
+				    		return"img/Ballon_Housing.svg"
+				    	else if (d.topic == "Income")
+				    		return"img/Ballon_Income.svg"
+				    	else if (d.topic == "Jobs")
+				    		return"img/Ballon_Jobs.svg"
+				    	else if (d.topic == "Community")
+				    		return"img/Ballon_Community.svg"
+				    	else if (d.topic == "Education")
+				    		return"img/Ballon_Education.svg"
+				    	else if (d.topic == "Environment")
+				    		return"img/Ballon_Environment.svg"
+				    	else if (d.topic == "Civic Engagement")
+				    		return"img/Ballon_CivicEngagement.svg"
+				    	else if (d.topic == "Health")
+				    		return"img/Ballon_Health.svg"
+				    	else if (d.topic == "Life Satisfaction")
+				    		return"img/Ballon_LifeSatisfaction.svg"
+				    	else if (d.topic == "Safety")
+				    		return"img/Ballon_Safety.svg"
+				    	else if (d.topic == "Work Life Balance")
+				    		return"img/Ballon_WorkLifeBalance.svg"
+				    })
+			 		.attr("x", function(d) {return -240/100*d.radius})
+				    .attr("y", function(d) {return -235/100*d.radius})
+				    .attr("width", function(d) {return 480/100*d.radius})
+				    .attr("height", function(d) {return 480/100*d.radius});
+
+	            function tick(e) {
+	              circle
+	                .each(cluster(10 * e.alpha * e.alpha))
+	                .each(collide(.5))
+	                .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+	            }
+
+	            // Move d to be adjacent to the cluster node.
+	            function cluster(alpha) {
+	              var max = {};
+
+	              // Find the largest node for each cluster.
+	              nodes.forEach(function(d) {
+	                if (!(d.color in max) || (d.radius > max[d.color].radius)) {
+	                  max[d.color] = d;
+	                }
+	              });
+
+	              return function(d) {
+	                var node = max[d.color],
+	                  l,
+	                  r,
+	                  x,
+	                  y,
+	                  i = -1;
+
+	                if (node == d) return;
+	                x = d.x - node.x;
+	                y = d.y - node.y;
+	                l = Math.sqrt(x * x + y * y);
+	                r = d.radius + node.radius;
+	                if (l != r) {
+	                  l = (l - r) / l * alpha;
+	                  d.x -= x *= l;
+	                  d.y -= y *= l;
+	                  node.x += x;
+	                  node.y += y;
+	                }
+	              };
+	            }
+	            
+	            function collide(alpha) {
+	              var quadtree = d3.geom.quadtree(nodes);
+	              return function(d) {
+	                var r = d.radius + radius.domain()[1] + padding,
+	                  nx1 = d.x - r,
+	                  nx2 = d.x + r,
+	                  ny1 = d.y - r,
+	                  ny2 = d.y + r;
+	                quadtree.visit(function(quad, x1, y1, x2, y2) {
+	                  if (quad.point && (quad.point !== d)) {
+	                    var x = d.x - quad.point.x,
+	                        y = d.y - quad.point.y,
+	                        l = Math.sqrt(x * x + y * y),
+	                        r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+	                    if (l < r) {
+	                        l = (l - r) / l * alpha;
+	                        d.x -= x *= l;
+	                        d.y -= y *= l;
+	                        quad.point.x += x;
+	                        quad.point.y += y;
+	                    }
+	                  }
+	                  return x1 > nx2
+	                      || x2 < nx1
+	                      || y1 > ny2
+	                      || y2 < ny1;
+	                });
+	              };
+	            }
+
+	        });
+		}
+
+		function calculWinner(){
+	        d3.tsv("data/country.tsv", function(error,tsv){
+
+ 				var teamAData=tsv.filter(function(d) {
+								  	  return(d.country==getCookie("teamA"))});
+ 				var teamBData=tsv.filter(function(d) {
+								  	  return(d.country==getCookie("teamB"))});
+
+ 
+
+				var scoreTeamA=Math.abs(100*teamAData[0].HO-parseFloat(getCookie("housingW")))+Math.abs(100*teamAData[0].IW-parseFloat(getCookie("incomeW")))+Math.abs(100*teamAData[0].JE-parseFloat(getCookie("jobsW")))+Math.abs(100*teamAData[0].SC-parseFloat(getCookie("communityW")))+Math.abs(100*teamAData[0].ES-parseFloat(getCookie("educationW")))+Math.abs(100*teamAData[0].EQ-parseFloat(getCookie("environmentW")))+Math.abs(100*teamAData[0].CG-parseFloat(getCookie("civicEngagementW")))+Math.abs(100*teamAData[0].HS-parseFloat(getCookie("healthW")))+Math.abs(100*teamAData[0].SW-parseFloat(getCookie("lifeSatisfactionW")))+Math.abs(100*teamAData[0].PS-parseFloat(getCookie("safetyW")))+Math.abs(100*teamAData[0].WL-parseFloat(getCookie("workLifeW")));
+	
+				var scoreTeamB=Math.abs(100*teamBData[0].HO-parseFloat(getCookie("housingW")))+Math.abs(100*teamBData[0].IW-parseFloat(getCookie("incomeW")))+Math.abs(100*teamBData[0].JE-parseFloat(getCookie("jobsW")))+Math.abs(100*teamBData[0].SC-parseFloat(getCookie("communityW")))+Math.abs(100*teamBData[0].ES-parseFloat(getCookie("educationW")))+Math.abs(100*teamBData[0].EQ-parseFloat(getCookie("environmentW")))+Math.abs(100*teamBData[0].CG-parseFloat(getCookie("civicEngagementW")))+Math.abs(100*teamBData[0].HS-parseFloat(getCookie("healthW")))+Math.abs(100*teamBData[0].SW-parseFloat(getCookie("lifeSatisfactionW")))+Math.abs(100*teamBData[0].PS-parseFloat(getCookie("safetyW")))+Math.abs(100*teamBData[0].WL-parseFloat(getCookie("workLifeW")));
+
+
+				
+
+
+
+	        	d3.tsv("data/fifa.tsv", function(error,nameC){ 	
+
+
+
+					d3.select("#chartC")
+						.selectAll("svg")
+			            .remove();	
+
+	        		var teamAFilter=nameC.filter(function(d) {
+								  	  return(d.code==getCookie("teamA"))});
+	        		var nameTeamA=teamAFilter[0].country;
+	        		var teamBFilter=nameC.filter(function(d) {
+								  	  return(d.code==getCookie("teamB"))});
+	        		var nameTeamB=teamBFilter[0].country;					
+
+
+
+					var marginField = 20,
+				    widthField = 500,
+				    heightField = 100;
+
+				    chartC = d3.select("#chartC").append("svg")
+				               .attr("width", widthField)
+				               .attr("height", heightField);
+
+
+					var dataset = [
+					                [nameTeamA, scoreTeamA],[nameTeamB, scoreTeamB]
+					              ];
+
+					if(d3.max(dataset, function(d) { return parseFloat(d[1]); })>50)
+						var max= d3.max(dataset, function(d) { return parseFloat(d[1]); });
+					else{
+						var max=50;
+					}
+					var xScale = d3.scale.linear()
+	                 .domain([0,max])
+	                 .range([2*marginField, widthField - 6*marginField]);
+
+			        var yScale = d3.scale.linear()
+	                 .domain([0, 2])
+	                 .range([heightField - marginField, marginField]);
+	
+
+					chartC.append("svg:image")
+					    .attr("xlink:href", "img/cage.svg")
+					    .attr("width", 80)
+					    .attr("height", 80)
+					    .attr("x", xScale(0)-40)
+					    .attr("y",yScale(2))
+					    .style("opacity",0.75);
+	
+
+					chartC.append("svg:image")
+					    .attr("xlink:href", "img/arrow.svg")
+					    .attr("width", 20)
+					    .attr("height", 20)
+					    .attr("x", 130)
+					    .attr("y",yScale(2)-20);				
+		
+					chartC.selectAll("text")
+					    .data(dataset)
+					    .enter()
+						.append("text")
+					    .text( function(d) {
+					        return  d[0] ;
+					    })
+					    .attr("x", function(d) {
+					        return xScale(d[1])+10;
+					    })
+					    .attr("y", function(d,i) {
+						    return yScale(i)+4;
+						})
+						.attr("font", "TheSerif")
+					    .attr("font-size", "16.8px")
+					    .attr("fill", "#555");
+
+		            var nodesBall=dataset.map(function(d) {
+		              return {
+		              	nameTeam: d[0],
+		              	scoreTeam: d[1]
+		              }
+		            });		
+		            			    
+
+		            var ball = chartC.selectAll("a.node")
+		              .data(nodesBall)
+		              .enter().append("a")
+		              .attr("class","nodes")
+						   
+					ball.selectAll("circle")
+					    .data(nodesBall)
+					    .enter()
+					    .append("circle")
+              		    .style("stroke", "black")
+              		    .style("fill", "white" )
+              		    .style("opacity",0.0)
+					    .attr("cx", function(d) {
+						        return xScale(d.scoreTeam);
+						   })
+						.attr("cy", function(d,i) {
+
+						        return yScale(i);
+						   })
+					    .attr("r", 7);
+
+					ball.append("image")
+					    .attr("xlink:href", function(d) {
+						        return "img/ball.svg";
+						   })
+					    .attr("width", 14)
+					    .attr("height", 14)
+					    .attr("x", function(d) {
+						        return xScale(d.scoreTeam)-7;
+						   })
+					    .attr("y",function(d,i) {
+						        return -7+ yScale(i);
+						   });	
+
+
+					chartC.append("text")
+					    .attr("x", 5)
+					    .attr("y",yScale(2)-5)
+					    .text("Your goal")
+						.attr("font", "TheSerif")
+					    .attr("font-size", "16.8px")
+					    .attr("fill", "#555");
+
+					chartC.append("text")
+					    .attr("x", 200)
+					    .attr("y",yScale(2)-5)
+					    .text("distance to goal")
+						.attr("font", "TheSerif")
+					    .attr("font-size", "16.8px")
+					    .attr("fill", "#555");
+
+
+					if(scoreTeamA<scoreTeamB){
+					        d3.select("#winningTeam")
+				            .select("#theWinner")
+				            .text(function(){
+				                return nameTeamA + " wins!";
+				            });
+				    }
+				    else if (scoreTeamB<scoreTeamA){
+					        d3.select("#winningTeam")
+				            .select("#theWinner")
+				            .text(function(){
+				                return nameTeamB + " wins!";
+				            });
+				    }
+				    else {
+					        d3.select("#winningTeam")
+				            .select("#theWinner")
+				            .text(function(){
+				                return "It is a draw!";
+				            });
+
+				    }
+	        	});	
+ 			});	
+		}
+		function calculFIFAWinner(){
+
+	        d3.tsv("data/fifa.tsv", function(error,tsv){
+
+ 				var teamAData=tsv.filter(function(d) {
+								  	  return(d.code==getCookie("teamA"))});
+ 				var teamBData=tsv.filter(function(d) {
+								  	  return(d.code==getCookie("teamB"))});
+
+ 				if(parseFloat(teamBData[0].ranking)>parseFloat(teamAData[0].ranking)){
+ 					d3.select("#winningTeam")
+			            .select("#fifaWinner")
+			            .text(function(d){
+			                return teamAData[0].country;
+			            });
+			    }
+			    else if(parseFloat(teamBData[0].ranking)<parseFloat(teamAData[0].ranking)){
+ 					d3.select("#winningTeam")
+			            .select("#fifaWinner")
+			            .text(function(d){
+			                return teamBData[0].country;
+			            });
+			    }
+			    else if(parseFloat(teamBData[0].ranking)=parseFloat(teamAData[0].ranking)){
+ 					d3.select("#winningTeam")
+			            .select("#fifaWinner")
+			            .text(function(d){
+			                return "draw!";
+			            });
+			    }
+	        });
+		}
+
+		function reset(){
+			document.getElementById("panelHousing").value=50;
+			update("panelHousing",50);
+			document.getElementById("panelIncome").value=50;
+			update("panelIncome",50);
+			document.getElementById("panelJobs").value=50;
+			update("panelJobs",50);
+			document.getElementById("panelCommunity").value=50;
+			update("panelCommunity",50);
+			document.getElementById("panelEducation").value=50;
+			update("panelEducation",50);
+			document.getElementById("panelEnvironment").value=50;
+			update("panelEnvironment",50);
+			document.getElementById("panelCivicEngagement").value=50;
+			update("panelCivicEngagement",50);
+			document.getElementById("panelHealth").value=50;
+			update("panelHealth",50);
+			document.getElementById("panelLifeSatisfaction").value=50;
+			update("panelLifeSatisfaction",50);
+			document.getElementById("panelSafety").value=50;
+			update("panelSafety",50);
+			document.getElementById("panelWorkLife").value=50;
+			update("panelWorkLife",50);
+			calculWinner(); calculFIFAWinner();
+		}
+	</script>
+</body>
